@@ -4,12 +4,9 @@ from math_functions import pie_prices
 
 
 async def get_purchases_plot(data):
-    #Распакум данные
-    plot_data = []
-    plot_data.extend([(item['price'], item['created_at']) for item in data])
     # Создаем график
     plt.subplots(figsize=(10.5, 5))
-    plt.plot([item[1] for item in plot_data],[item[0] for item in plot_data], marker="o")
+    plt.plot([item[3] for item in data],[item[1] for item in data], marker="o")
     plt.title("Расходы")
     plt.xticks(rotation=45)
     plt.ylabel("Сумма")
@@ -24,12 +21,9 @@ async def get_purchases_plot(data):
 
 
 async def get_income_plot(data):
-    #Распакум данные
-    plot_data = []
-    plot_data.extend([(item['quantity'], item['created_at']) for item in data])
     # Создаем график
     plt.subplots(figsize=(11, 5))
-    plt.plot([item[1] for item in plot_data],[item[0] for item in plot_data], marker="o")
+    plt.plot([item[3] for item in data],[item[1] for item in data], marker="o")
     plt.title("Доходы")
     plt.xticks(rotation=45)
     plt.ylabel("Сумма")

@@ -2,12 +2,12 @@ import asyncio
 import aio_pika, json
 from aio_pika import Message
 from report_builder import get_report
+from rabbitmq import RabbitMQConnectionManager
 
 
 async def main():
     # Подключаемся к RabbitMQ
-    connection = await aio_pika.connect_robust("amqp://guest:guest@localhost:5672/")
-    channel = await connection.channel()
+    channel = await RabbitMQConnectionManager.get_channel()
 
     # Подписываемся на очередь запросов
     queue = await channel.declare_queue("report_queue", durable=True)
@@ -24,7 +24,7 @@ async def main():
                 if not reply_to or not correlation_id:
                     print("Пропущено сообщение без reply_to/correlation_id")
                     continue
-
+                #print(data)
                 # Обрабатываем сообщение
                 result = await get_report(data)
 

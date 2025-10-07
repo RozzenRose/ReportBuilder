@@ -1,3 +1,6 @@
+from datetime import date
+
+
 async def pie_prices(data: dict) -> dict:
     answer_data = {}
     categories = [item for item in data['categories']]
@@ -12,3 +15,15 @@ async def pie_prices(data: dict) -> dict:
             del answer_data[cat['category_name']]
 
     return tuple(answer_data.items())
+
+
+async def sort_data(data):
+    purchases = [(item['name'], item['price'],
+                  item['currency'], item['created_at'])
+                 for item in data['purchases']]
+    purchases.sort(key=lambda x: date.fromisoformat(x[3]))
+    incomes = [(item['description'], item['quantity'],
+                item['currency'], item['created_at'])
+               for item in data['incomes']]
+    incomes.sort(key=lambda x: date.fromisoformat(x[3]))
+    return purchases, incomes
