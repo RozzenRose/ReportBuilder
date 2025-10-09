@@ -6,8 +6,8 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from plot_builder import get_purchases_plot, get_income_plot, get_pie
 from math_functions import pie_prices, sort_data
-from rabbitmq import send_to_aggregator
-import io, asyncio, uuid, json
+from rabbitmq.to_aggregator import send_to_aggregator
+import io
 
 
 # Путь к шрифту DejaVuSans (по умолчанию на Manjaro)
@@ -38,7 +38,7 @@ async def get_report(raw_data):
     y_string = 430
     for i in range(len(purchases)):
         c.drawString(50, y_string, f"{purchases[i][0]} - "
-                                           f"{purchases[i][1]} {purchases[i][2]}")
+                                           f"{round(purchases[i][1])} {purchases[i][2]}")
         y_string -= 15
 
     c.showPage()  # Создаем новую страницу
@@ -50,7 +50,7 @@ async def get_report(raw_data):
     y_string = 430
     for i in range(len(incomes)):
         c.drawString(50, y_string, f"{incomes[i][0]} - "
-                                           f"{incomes[i][1]} {incomes[i][2]}")
+                                           f"{round(incomes[i][1])} {incomes[i][2]}")
         y_string -= 15
 
     c.showPage() # Создаем новую страницу
@@ -70,7 +70,7 @@ async def get_report(raw_data):
     for i in range(len(pie_data)):
         cat = pie_data[i][0]
         pri = pie_data[i][1]
-        c.drawString(50, y_string, f'{cat} - {pri} - {round((pri/sum_pri)*100, 2)}%')
+        c.drawString(50, y_string, f'{cat} - {round(pri)} - {round((pri/sum_pri)*100, 2)}%')
         y_string -= 15
 
     # Сохраняем PDF

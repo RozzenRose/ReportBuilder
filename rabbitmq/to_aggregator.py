@@ -1,5 +1,13 @@
-import aio_pika, asyncio, uuid, json
-from rabbitmq import RabbitMQConnectionManager
+import asyncio, aio_pika, uuid, json
+from rabbitmq.connection import RabbitMQConnectionManager
+
+
+async def send_message(channel, data, queue, reply_queue, correlation_id):
+    await channel.default_exchange.publish(
+        aio_pika.Message(body=data, reply_to=reply_queue,
+                         correlation_id=correlation_id),
+        routing_key=queue)
+
 
 async def consume_response(reply_queue, correlation_id: str, future: asyncio.Future):
     async def on_message(message: aio_pika.IncomingMessage) -> None:
@@ -11,13 +19,6 @@ async def consume_response(reply_queue, correlation_id: str, future: asyncio.Fut
     return consumer_tag
 
 
-async def send_message(channel, data, queue, reply_queue, correlation_id):
-    await channel.default_exchange.publish(
-        aio_pika.Message(body=data, reply_to=reply_queue.name,
-                         correlation_id=correlation_id),
-        routing_key=queue.name)
-
-
 async def send_to_aggregator(data):
     loop = asyncio.get_running_loop()
     future = loop.create_future()
@@ -27,7 +28,7 @@ async def send_to_aggregator(data):
     reply_queue = await channel.declare_queue('reply_report_aggregation_queue', durable=True)
     consumer_tag = await consume_response(reply_queue, correlation_id, future)
     new_data = {'data': data, 'content': 'Report'}
-    await send_message(channel, json.dumps(new_data).encode(), queue, reply_queue, correlation_id)
+    await send_message(channel, json.dumps(new_data).encode(), queue.name, reply_queue.name, correlation_id)
 
     try:
         response = json.loads(await asyncio.wait_for(future, timeout=10))
