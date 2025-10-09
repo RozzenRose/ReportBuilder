@@ -1,5 +1,5 @@
 import aio_pika, json
-from report_builder import get_report
+from logic.report_builder import get_report
 from .to_aggregator import send_message
 
 

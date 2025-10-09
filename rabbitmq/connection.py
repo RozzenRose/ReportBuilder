@@ -1,12 +1,13 @@
 import aio_pika
 from aio_pika.abc import AbstractRobustConnection, AbstractChannel
 from typing import Optional
+from config import settings
 
 
 class RabbitMQConnectionManager:
     _connection: Optional[AbstractRobustConnection] = None
     _channel: Optional[AbstractChannel] = None
-    _url: str = "amqp://guest:guest@localhost:5672/"
+    _url: str = settings.rabbitmq_url
 
 
     @classmethod

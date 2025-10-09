@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import io
-from math_functions import pie_prices
+from logic.math_functions import pie_prices
 
 
 async def get_purchases_plot(data):

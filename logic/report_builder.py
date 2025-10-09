@@ -4,8 +4,8 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.utils import ImageReader
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from plot_builder import get_purchases_plot, get_income_plot, get_pie
-from math_functions import pie_prices, sort_data
+from logic.plot_builder import get_purchases_plot, get_income_plot, get_pie
+from logic.math_functions import pie_prices, sort_data
 from rabbitmq.to_aggregator import send_to_aggregator
 import io
 
