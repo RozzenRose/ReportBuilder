@@ -11,7 +11,7 @@ import io
 
 
 # Путь к шрифту DejaVuSans (по умолчанию на Manjaro)
-font_path = "/usr/share/fonts/TTF/DejaVuSans.ttf"
+font_path = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
 # Регистрируем шрифт
 pdfmetrics.registerFont(TTFont("CyrillicFont", font_path))
 
