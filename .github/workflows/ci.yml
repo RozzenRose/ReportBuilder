@@ -36,15 +36,12 @@ jobs:
 
       # 5 Сборка образа основного сервиса
       - name: Build main service image
-        run: |
-          IMAGE=ghcr.io/rozzenrose/report_builder:${{ github.sha }}
-          docker build -t "$IMAGE" .
+        run: docker build -t "$IMAGE" .
 
       # 7️ Публикуем образ в GHCR (только для main)
       - name: Push image to GHCR
         if: github.ref == 'refs/heads/main'
         run: |
-          IMAGE_BASE=ghcr.io/rozzenrose/report_builder
           docker tag $IMAGE $IMAGE_BASE:${{ github.sha }}
           docker tag $IMAGE $IMAGE_BASE:latest
           docker push $IMAGE_BASE:${{ github.sha }}
