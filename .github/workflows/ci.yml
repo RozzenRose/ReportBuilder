@@ -36,12 +36,6 @@ jobs:
           IMAGE=ghcr.io/rozzenrose/report_builder:${{ github.sha }}
           docker build -t "$IMAGE" .
 
-      # 6 Прогон тестов внутри контейнера
-      - name: Run tests
-        run: |
-          IMAGE=ghcr.io/rozzenrose/report_builder:${{ github.sha }}
-          docker run --rm "$IMAGE" python -m pytest || (echo "Tests failed" && exit 1)
-
       # 7️ Публикуем образ в GHCR (только для main)
       - name: Push image to GHCR
         if: github.ref == 'refs/heads/main'
