@@ -10,7 +10,7 @@ permissions:
   packages: write
 
 jobs:
-  build-test-push:
+  build-push:
     runs-on: ubuntu-latest
 
     env:
